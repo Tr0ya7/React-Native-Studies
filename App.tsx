@@ -13,7 +13,7 @@ const App = () => {
     return (
         <View style={styles.container}>
             <Text>
-                Menu Pizza:
+                Menu:
             </Text>
             <Picker selectedValue={selectedPizza} onValueChange={setSelectedPizza}>
                 {pizzas.map((pizza) => <Picker.Item value={pizza.id} label={pizza.name} />)}
