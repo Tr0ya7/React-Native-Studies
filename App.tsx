@@ -1,27 +1,20 @@
-import { StyleSheet, Text, View } from "react-native"
-import Slider from "@react-native-community/slider"
 import { useState } from "react"
+import { StyleSheet, View, Switch, Text } from "react-native"
 
 const App = () => {
-    const [sliderValue, setSliderValue] = useState<number>(0)
+    const [switchValue, setSwitchValue] = useState<boolean>(false)
 
-    return (
-        <View style={styles.container}>
-            <Text style={styles.sliderValueText}>
-                {sliderValue.toFixed()}
-            </Text>
-            <Slider minimumValue={0} maximumValue={100} minimumTrackTintColor="#00ff00" maximumTrackTintColor="#ff0000" value={sliderValue} onValueChange={setSliderValue} />
-        </View>
-    )
+    return <View style={styles.container}><Switch value={switchValue} onValueChange={setSwitchValue} thumbColor="red" /><Text style={styles.text}>{switchValue ? "Active" : "Inactive"}</Text></View>
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        marginTop: 15
+        margin: 15,        
+        alignItems: 'center',
+        rowGap: 15
     },
 
-    sliderValueText: {
+    text: {
         textAlign: 'center',
         fontSize: 30
     }
