@@ -1,22 +1,69 @@
 import { useState } from "react"
-import { StyleSheet, View, Switch, Text } from "react-native"
+import { StyleSheet, View, TextInput, TouchableOpacity, Text, Alert, Keyboard } from "react-native"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 const App = () => {
-    const [switchValue, setSwitchValue] = useState<boolean>(false)
+    const [input, setInput] = useState('')
+    const [name, setName] = useState('')
 
-    return <View style={styles.container}><Switch value={switchValue} onValueChange={setSwitchValue} thumbColor="red" /><Text style={styles.text}>{switchValue ? "Active" : "Inactive"}</Text></View>
+    const saveName = async () => {
+        Alert.alert('Saved!')
+        Keyboard.dismiss()
+
+        if (input !== name) await AsyncStorage.setItem('name', input)
+
+        await AsyncStorage.getItem('name').then((value) => setName(value))
+    }
+
+    return (
+        <View style={styles.container}>
+            <View style={styles.content}>
+                <TextInput style={styles.input} value={input} onChangeText={setInput} underlineColorAndroid="transparent" />
+                <TouchableOpacity onPress={saveName}>
+                    <Text style={styles.buttonText}>
+                        +
+                    </Text>
+                </TouchableOpacity>
+            </View>
+            <Text style={styles.name}>
+                {name}
+            </Text>
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
     container: {
-        margin: 15,        
-        alignItems: 'center',
-        rowGap: 15
+        flex: 1,        
+        marginTop: 20,
+        alignContent: 'center'
     },
 
-    text: {
+    content: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+
+    input: {
+        width: 350,
+        height: 40,
+        borderColor: 'black',
+        borderWidth: 1,
+        margin: 10
+    },
+
+    buttonText: {
+        backgroundColor: 'black',
+        color: 'white',
+        height: 40,
+        padding: 10,
+        marginLeft: 4
+    },
+
+    name: {
+        fontSize: 30,
         textAlign: 'center',
-        fontSize: 30
+        marginTop: 15
     }
 })
 
