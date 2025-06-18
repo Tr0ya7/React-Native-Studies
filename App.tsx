@@ -1,69 +1,35 @@
 import { useState } from "react"
-import { StyleSheet, View, TextInput, TouchableOpacity, Text, Alert, Keyboard } from "react-native"
-import AsyncStorage from "@react-native-async-storage/async-storage"
+import { Button, Modal, StyleSheet, Text, View } from "react-native"
+import Enter from "./components/Enter"
 
 const App = () => {
-    const [input, setInput] = useState('')
-    const [name, setName] = useState('')
-
-    const saveName = async () => {
-        Alert.alert('Saved!')
-        Keyboard.dismiss()
-
-        if (input !== name) await AsyncStorage.setItem('name', input)
-
-        await AsyncStorage.getItem('name').then((value) => setName(value))
-    }
+    const [modalVisible, setModalVisible] = useState<boolean>(false)
 
     return (
         <View style={styles.container}>
-            <View style={styles.content}>
-                <TextInput style={styles.input} value={input} onChangeText={setInput} underlineColorAndroid="transparent" />
-                <TouchableOpacity onPress={saveName}>
-                    <Text style={styles.buttonText}>
-                        +
-                    </Text>
-                </TouchableOpacity>
-            </View>
-            <Text style={styles.name}>
-                {name}
-            </Text>
+            <Button title="Enter" onPress={() => setModalVisible(true)} />
+            <Modal animationType="slide" visible={modalVisible} transparent={true}>
+                <View style={styles.modalContent}>
+                    <Enter closeModal={() => setModalVisible(false)} />
+                </View>
+            </Modal>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,        
-        marginTop: 20,
-        alignContent: 'center'
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#ddd'
     },
 
-    content: {
-        flexDirection: 'row',
+    modalContent: {
+        margin: 15,
+        flex: 1,
+        justifyContent: 'center',
         alignItems: 'center'
-    },
-
-    input: {
-        width: 350,
-        height: 40,
-        borderColor: 'black',
-        borderWidth: 1,
-        margin: 10
-    },
-
-    buttonText: {
-        backgroundColor: 'black',
-        color: 'white',
-        height: 40,
-        padding: 10,
-        marginLeft: 4
-    },
-
-    name: {
-        fontSize: 30,
-        textAlign: 'center',
-        marginTop: 15
     }
 })
 
